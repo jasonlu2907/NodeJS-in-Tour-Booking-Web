@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-in-tour-booking-web",
+  "version": "1.0.0",
+  "description": "learning nodejs, express and mongodb",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonlu2907/NodeJS-in-Tour-Booking-Web.git"
+  },
+  "author": "Jason Lu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasonlu2907/NodeJS-in-Tour-Booking-Web/issues"
+  },
+  "homepage": "https://github.com/jasonlu2907/NodeJS-in-Tour-Booking-Web#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {}
+}

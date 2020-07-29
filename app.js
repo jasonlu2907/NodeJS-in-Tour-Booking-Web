@@ -4,13 +4,16 @@ const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoute');
 const userRouter = require('./routes/userRoute');
 
-
 const app = express();
 
 // 1) MIDDLEWARE
-app.use(express.json());
-app.use(morgan('dev'));
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
 
+app.use(express.json());
+app.use(express.static(`${__dirname}/public`));
 
 // 3) ROUTES nhưng h đã xử dụng middleware
 // với route thế này dùng middle thế này

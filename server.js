@@ -38,8 +38,24 @@ const tourSchema = new mongoose.Schema({
         required: [true, 'Tour needs a price']
     }
 });
-// Programming convention for model
+// Programming convention using Uppcase for Model
 const Tour = mongoose.model('Tour', tourSchema);
+
+const testTour = new Tour({
+    name: 'Campus Lover',
+    rating: 4.4,
+    price: 123
+});
+
+/**Interact with the DB by coding */
+testTour
+    .save() // save the Model to the tours collection in DB
+    .then((doc) => {
+        console.log(doc);
+    })
+    .catch((err) => {
+        console.log('ERROR :', err);
+    });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

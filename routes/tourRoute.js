@@ -7,6 +7,7 @@ const tourController = require(`./../controllers/tourController`);
 const tourRouter = express.Router();
 
 // BỞI VÌ PARAM BH CHỈ CÓ id
+// Check route nào có param co' id
 tourRouter.param('id', tourController.checkId);
 
 tourRouter

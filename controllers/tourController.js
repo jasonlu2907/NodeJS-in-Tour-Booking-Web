@@ -1,22 +1,23 @@
-const fs = require('fs');
 // const express = require('express');
+const Tour = require(`./../models/tourModel`);
 
 /**Array of JavaScript object */
-const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-);
+// const tours = JSON.parse(
+//     fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+// ); Dont need it since we use DB now
 
-exports.checkId = (req, res, next, val) => {
-    console.log(`You selected tour id: ${val}`);
+/**Dont need it since start working with MongoDB */
+// exports.checkId = (req, res, next, val) => {
+//     console.log(`You selected tour id: ${val}`);
 
-    if (req.params.id * 1 > tours.length) {
-        return res.status(404).json({
-            status: 'fail',
-            messages: 'Invalid ID'
-        });
-    }
-    next();
-};
+//     if (req.params.id * 1 > tours.length) {
+//         return res.status(404).json({
+//             status: 'fail',
+//             messages: 'Invalid ID'
+//         });
+//     }
+//     next();
+// };
 
 exports.checkBody = (req, res, next) => {
     if (!req.body.price || !req.body.name) {
@@ -31,20 +32,20 @@ exports.checkBody = (req, res, next) => {
 // 2) ROUTE HANDLES
 exports.getAllTours = (req, res) => {
     res.status(200).json({
-        status: 'success',
-        result: tours.length,
-        data: {
-            tours
-        }
+        // status: 'success',
+        // result: tours.length,
+        // data: {
+        //     tours
+        // }
     });
 };
 
 // Ví dụ vô thử 1 trang hàng cụ thể có id = ...
 exports.getTour = (req, res) => {
-    console.log(req.params);
+    // console.log(req.params);
 
-    const id = req.params.id * 1; // Hoặc dùng parseInt để chuyển sang số
-    const tour = tours.find((el) => el.id === id);
+    // const id = req.params.id * 1; // Hoặc dùng parseInt để chuyển sang số
+    // const tour = tours.find((el) => el.id === id);
 
     // if(id > tours[tours.length-1].id)
     // if(!tour) {
@@ -57,7 +58,7 @@ exports.getTour = (req, res) => {
     res.status(200).json({
         status: 'success',
         data: {
-            tour
+            // tour
         }
     });
 };
@@ -66,6 +67,7 @@ exports.createTour = (req, res) => {
     // USE MIDDLEWARE TO ACCESS TO THE BODY OF THE REQUEST
     // console.log(req.body);
 
+    /*  
     const newID = tours[tours.length - 1].id + 1;
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const newTour = { id: newID, ...req.body };
@@ -83,6 +85,7 @@ exports.createTour = (req, res) => {
             });
         }
     );
+    */
 
     // CAN'T HANDLE TWO RESPONSES.send AT THE SAME TIME
     // res.send("Done");

@@ -30,37 +30,57 @@ exports.checkBody = (req, res, next) => {
 };
 
 // 2) ROUTE HANDLES
-exports.getAllTours = (req, res) => {
+exports.getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find();
+  
     res.status(200).json({
-        // status: 'success',
-        // result: tours.length,
-        // data: {
-        //     tours
-        // }
+        status: 'success',
+        result: tours.length,
+        data: {
+            tours
+        }
     });
+
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
 };
 
 // Ví dụ vô thử 1 trang hàng cụ thể có id = ...
-exports.getTour = (req, res) => {
+exports.getTour = async (req, res) => {
     // console.log(req.params);
 
-    // const id = req.params.id * 1; // Hoặc dùng parseInt để chuyển sang số
-    // const tour = tours.find((el) => el.id === id);
+    /*const id = req.params.id * 1; // Hoặc dùng parseInt để chuyển sang số
+    const tour = tours.find((el) => el.id === id);
 
-    // if(id > tours[tours.length-1].id)
-    // if(!tour) {
-    //     res.status(404).json({
-    //         status: 'fail',
-    //         messages: 'Data not found'
-    //     })
-    // };
+    if(id > tours[tours.length-1].id)
+    if(!tour) {
+      res.status(404).json({
+          status: 'fail',
+          messages: 'Data not found'
+      })
+    };*/
 
-    res.status(200).json({
+    try {
+      const tour = await Tour.findById(req.params.id);
+      // shorthand of Tour.findOne({ _id: req.params.id })
+      
+      res.status(200).json({
         status: 'success',
         data: {
-            // tour
+            tour
         }
-    });
+      });
+    } catch (err) {
+      res.status(404).json({
+        status: 'fail',
+        message: err
+      });
+    }
 };
 
 exports.createTour = async (req, res) => {
@@ -79,7 +99,7 @@ exports.createTour = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      messages: err
+      message: err
     })
   }
 

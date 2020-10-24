@@ -1,4 +1,5 @@
 // const express = require('express');
+const { query } = require("express");
 const Tour = require(`./../models/tourModel`);
 
 /**Array of JavaScript object */
@@ -32,8 +33,31 @@ exports.checkBody = (req, res, next) => {
 // 2) ROUTE HANDLES
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    /**BUILD QUERY */
+    // assign req.query to another var but have to use ... method
+    // if not, if we change queryObj -> also change req.query
+    const queryObj = {...req.query};
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    // Delete nhung query ko can thiet
+    // Vi du ?difficulty=easy&page=2 nhưng page ko có trong data
+    // -> tự ignore
+    excludedFields.forEach(el => delete queryObj[el]);
+    // console.log(req.query);
+
+    // We now recognize những gì trong req.query na ná với cách 1. Filter
+    const query = Tour.find(queryObj); // dung req.query doan nay ko dc nua
+    /**2ways writing DB queries. 1: Filter  method 2: Mongoose methods */
+    // const query = Tour.find({duration: '5', difficulty: 'easy'});
+    // const query = Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy')
   
+    /**EXECUTE QUERY */
+    const tours = await query;
+
+    /**SEND RESPONSE */
     res.status(200).json({
         status: 'success',
         result: tours.length,

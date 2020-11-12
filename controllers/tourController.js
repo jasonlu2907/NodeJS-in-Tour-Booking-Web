@@ -34,21 +34,27 @@ const Tour = require(`./../models/tourModel`);
 exports.getAllTours = async (req, res) => {
   try {
     /**BUILD QUERY */
+    // 1) Filtering
     // assign req.query(Object) to another var but have to use ... method
     // if not, if we change queryObj -> also change req.query. They have the same reference
     const queryObj = {...req.query};
 
     // These excluded fields are for pagination
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    
+
     // Delete nhung query ko can thiet
     // Vi du ?difficulty=easy&page=2 nhưng page ko có trong data
     // -> tự ignore
     excludedFields.forEach(el => delete queryObj[el]);
     // console.log(req.query);
 
+    // 2) Advanced Filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte?|lte?)\b/g, match => `$${match}`);
+    console.log(JSON.parse(queryStr));
+
     // We now recognize những gì trong req.query na ná với cách 1. Filter
-    const query = Tour.find(queryObj); // dung req.query doan nay ko dc nua
+    const query = Tour.find(JSON.parse(queryStr)); // dung req.query doan nay ko dc nua
     /** 2ways writing DB queries. 1: Filter (find method) 2: Mongoose methods */
     // const query = Tour.find({duration: '5', difficulty: 'easy'});
     // const query = Tour.find()

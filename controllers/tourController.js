@@ -20,24 +20,27 @@ const Tour = require(`./../models/tourModel`);
 //     next();
 // };
 
-exports.checkBody = (req, res, next) => {
-    if (!req.body.price || !req.body.name) {
-        return res.status(400).json({
-            status: 'fail',
-            messages: 'Missing name or price'
-        });
-    }
-    next();
-};
+// exports.checkBody = (req, res, next) => {
+//     if (!req.body.price || !req.body.name) {
+//         return res.status(400).json({
+//             status: 'fail',
+//             messages: 'Missing name or price'
+//         });
+//     }
+//     next();
+// };
 
 // 2) ROUTE HANDLES
 exports.getAllTours = async (req, res) => {
   try {
     /**BUILD QUERY */
-    // assign req.query to another var but have to use ... method
-    // if not, if we change queryObj -> also change req.query
+    // assign req.query(Object) to another var but have to use ... method
+    // if not, if we change queryObj -> also change req.query. They have the same reference
     const queryObj = {...req.query};
+
+    // These excluded fields are for pagination
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    
     // Delete nhung query ko can thiet
     // Vi du ?difficulty=easy&page=2 nhưng page ko có trong data
     // -> tự ignore
@@ -46,7 +49,7 @@ exports.getAllTours = async (req, res) => {
 
     // We now recognize những gì trong req.query na ná với cách 1. Filter
     const query = Tour.find(queryObj); // dung req.query doan nay ko dc nua
-    /**2ways writing DB queries. 1: Filter  method 2: Mongoose methods */
+    /** 2ways writing DB queries. 1: Filter (find method) 2: Mongoose methods */
     // const query = Tour.find({duration: '5', difficulty: 'easy'});
     // const query = Tour.find()
     //   .where('duration')

@@ -54,7 +54,8 @@ exports.getAllTours = async (req, res) => {
     console.log(JSON.parse(queryStr));
 
     // We now recognize những gì trong req.query na ná với cách 1. Filter
-    const query = Tour.find(JSON.parse(queryStr)); // dung req.query doan nay ko dc nua
+    let query = Tour.find(JSON.parse(queryStr)); /*--This line of code
+    returns a QUERY(kf variable) */
     /** 2ways writing DB queries. 1: Filter (find method) 2: Mongoose methods */
     // const query = Tour.find({duration: '5', difficulty: 'easy'});
     // const query = Tour.find()
@@ -62,6 +63,17 @@ exports.getAllTours = async (req, res) => {
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy')
+
+    // 3) Sorting
+    if (req.query.sort) {
+      // tren URL: ...?sort=price,ratingAverage
+      // nhung ham sort hoat dong theo format nay sort('price ratingAverage');
+      const sortBy = req.query.sort.split(',').join(' ');
+      //query = query.sort(req.query.sort); /*--So that it can be use here */
+      query = query.sort(sortBy);
+    } else { // Without any queries
+      query = query.sort('-createdAt');
+    }
   
     /**EXECUTE QUERY */
     const tours = await query;
